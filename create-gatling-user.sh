@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KEYCLOAK_URL="http://localhost:8081/keycloak"
+KEYCLOAK_URL="http://keycloak:8080/keycloak"
 REALM="Misarch"
 ADMIN_USER="admin"
 ADMIN_PASS="admin"
