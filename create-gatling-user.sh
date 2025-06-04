@@ -89,5 +89,3 @@ fi
 
 export USER_ID
 echo "✅ Gatling user created and role assigned. USER_ID=${USER_ID}"
-
-echo "$USER_ID"
