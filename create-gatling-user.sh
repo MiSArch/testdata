@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KEYCLOAK_URL="http:/localhost:8081/keycloak"
+KEYCLOAK_URL="http://keycloak:80/keycloak"
 REALM="Misarch"
 ADMIN_USER="admin"
 ADMIN_PASS="admin"
@@ -22,6 +22,8 @@ USER_ID=$(curl -s -o /dev/null -w "%{http_code}" -X POST "${KEYCLOAK_URL}/admin/
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
   -d '{
         "username": "'"${GATLING_USERNAME}"'",
+        "firstName": "'"${GATLING_USERNAME}"'",
+        "lastName": "'"${GATLING_USERNAME}"'",
         "enabled": true
       }')
 
@@ -73,20 +75,19 @@ curl -s -X POST "${KEYCLOAK_URL}/admin/realms/${REALM}/users/${USER_ID}/role-map
 USER_ID=$(curl -s -X GET "${KEYCLOAK_URL}/admin/realms/${REALM}/users?username=${GATLING_USERNAME}" \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" | jq -r '.[0].id')
 
+# 8. Publish user ID to Dapr pubsub
+JSON_PAYLOAD="{\"id\":\"${USER_ID}\",\"username\":\"${GATLING_USERNAME}\",\"firstName\":\"gatling\",\"lastName\":\"gatling\"}"
+
+curl -s -X POST http://user-dapr:3500/v1.0/publish/pubsub/user/user/create \
+     -H "Content-Type: application/json" \
+     -d "$JSON_PAYLOAD"
+
 if [ -z "$USER_ID" ]; then
   echo "Failed to retrieve user ID for ${GATLING_USERNAME}" >&2
   exit 1
 fi
 
-# 8. Publish user ID to Dapr pubsub
-JSON_PAYLOAD=$(jq -n --arg username "$GATLING_USERNAME" \
-                     --arg firstName "gatling" \
-                     --arg lastName "gatling" \
-                     --arg id "$USER_ID" \
-                     '{username: $username, firstName: $firstName, lastName: $lastName, id: $id}')
+export USER_ID
+echo "✅ Gatling user created and role assigned. USER_ID=${USER_ID}"
 
-curl -s -X POST http://localhost:3500/v1.0/publish/pubsub/user/user/create \
-     -H "Content-Type: application/json" \
-     -d "$JSON_PAYLOAD"
-
-echo "✅ Gatling user created and role assigned."
+echo "$USER_ID"

@@ -1,0 +1,6 @@
+services:
+  testdata:
+    restart: no
+    build:
+      context: .
+      dockerfile: Dockerfile

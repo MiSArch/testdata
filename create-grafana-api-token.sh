@@ -1,12 +1,11 @@
 #!/bin/bash
 
-GRAFANA_URL="http://localhost:3001"
+GRAFANA_URL="http://grafana:3000"
 ADMIN_USER="admin"
 ADMIN_PASSWORD="admin"
 SERVICE_ACCOUNT_NAME="experiment-executor"
 SERVICE_ACCOUNT_ROLE="Admin"
 TOKEN_NAME="experiment-executor-token"
-TOKEN_FILE="/Users/p371728/Desktop/token.txt"
 
 create_grafana_service_account() {
     local response http_code
@@ -57,20 +56,6 @@ create_grafana_api_token() {
     fi
 }
 
-save_token() {
-    local token="$1"
-    if [ -n "$token" ]; then
-        export GRAFANA_API_TOKEN="$token"
-        echo "Token saved to environment variable GRAFANA_API_TOKEN."
-        mkdir -p "$(dirname "$TOKEN_FILE")"
-        echo "$token" > "$TOKEN_FILE"
-        echo "Token saved to file: $TOKEN_FILE"
-    else
-        echo "No token to save." >&2
-        return 1
-    fi
-}
-
 main() {
     if ! command -v jq >/dev/null 2>&1; then
         echo "Error: 'jq' is required but not installed." >&2
@@ -90,9 +75,6 @@ main() {
     if [ $? -ne 0 ]; then
         exit 1
     fi
-
-    echo "Saving token..."
-    save_token "$token"
 }
 
 main
