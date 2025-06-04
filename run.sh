@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-echo "⏳ Idling for 120 seconds until MiSArch is ready..."
-sleep 120
+echo "⏳ Idling for 4 minutes until MiSArch is ready..."
+sleep 240
 
 echo "🚀 Starting script execution in Docker container..."
 
