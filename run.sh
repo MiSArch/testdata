@@ -13,6 +13,3 @@ echo "✅ Running create-gatling-user.sh..."
 
 echo "✅ Running create-test_data.sh..."
 /app/create-test-data.sh
-
-echo "✅ Running create-grafana-api-token.sh..."
-/app/create-grafana-api-token.sh
