@@ -79,10 +79,10 @@ echo "✅ Product ID: $PRODUCT_ID"
 echo "✅ Product Variant ID: $PRODUCT_VARIANT_ID"
 
 # 5. Restock product variant
-for i in {1..50}; do
+for i in {1..100}; do
   RESTOCK_RESPONSE=$(execute_mutation "mutation { createProductItemBatch(input:{ productVariantId: \"$PRODUCT_VARIANT_ID\", number: 100 }) { id } }")
 done
-echo "✅ Restocked 5000 items"
+echo "✅ Restocked 10000 items"
 
 
 echo "🎉 All mutations executed successfully."
