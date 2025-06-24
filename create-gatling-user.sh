@@ -1,20 +1,12 @@
 #!/bin/bash
 
-KEYCLOAK_URL="http://keycloak:80/keycloak"
-REALM="Misarch"
-ADMIN_USER="admin"
-ADMIN_PASS="admin"
-CLIENT_ID="admin-cli"
-GATLING_USERNAME="gatling"
-GATLING_PASSWORD="123"
-
 # 1. Get Admin Token
 ACCESS_TOKEN=$(curl -s -X POST "${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "username=${ADMIN_USER}" \
   -d "password=${ADMIN_PASS}" \
   -d "grant_type=password" \
-  -d "client_id=${CLIENT_ID}" | jq -r .access_token)
+  -d "client_id=${ADMIN_CLIENT_ID}" | jq -r .access_token)
 
 # 2. Create the user
 USER_ID=$(curl -s -o /dev/null -w "%{http_code}" -X POST "${KEYCLOAK_URL}/admin/realms/${REALM}/users" \

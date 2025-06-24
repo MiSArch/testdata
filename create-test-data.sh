@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-GRAPHQL_ENDPOINT="http://gateway:8080/graphql"
 AUTH_HEADER="Authorization: Bearer $(./get-token.sh)"
 
 execute_mutation() {
