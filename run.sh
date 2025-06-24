@@ -2,8 +2,10 @@
 
 set -euo pipefail
 
-echo "⏳ Idling for 4 minutes until MiSArch is ready..."
-sleep 240
+if [[ "${INIT_IDLE:-false}" == "true" ]]; then
+  echo "⏳ Idling for 4 minutes until MiSArch is ready..."
+  sleep 240
+fi
 
 echo "🚀 Starting script execution in Docker container..."
 
