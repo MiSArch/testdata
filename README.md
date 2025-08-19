@@ -3,6 +3,7 @@
 This directory contains scripts to create test data for the MiSArch Experiment Tool.
 
 In the Docker stack this data is created automatically when docker-compose is called.
+Note that each time the stack is executed, the test data is created, so it might end up duplicated.
 
 For Kubernetes all scripts must be manually executed from using e.g. `kubectl port-forward`.
 
